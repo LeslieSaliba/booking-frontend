@@ -9,7 +9,6 @@ function Home() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [userID, setUserID] = useState(null);
-  const [userReservations, setUserReservations] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -23,57 +22,12 @@ function Home() {
     };
 
     fetchEvents();
-    setUserID(getUserID());
-
-    const fetchUserReservations = async () => {
-      try {
-        const userReservationsResponse = await axios.get(
-          `http://localhost:5000/reservation/getByUserID/${userID}`
-        );
-        setUserReservations(userReservationsResponse.data.data);
-      } catch (error) {
-        console.log("error fetching user reservations", error);
-      }
-    };
-
-    if (userID) {
-      fetchUserReservations();
-    }
+    
   }, [userID]);
 
-  const hasReserved = (eventID) => {
-    return userReservations.some(
-      (reservation) => reservation.eventID === eventID
-    );
-  };
-
-  const handleLogout = () => {
-    sessionStorage.removeItem("authToken");
-    navigate("/login");
-  };
 
   const handleReserve = async (eventID) => {
-    const token = sessionStorage.getItem("authToken");
-    const headers = { Authorization: `Bearer ${token}` };
-    console.log({
-      userID,
-      eventID,
-    });
-    try {
-      const reservationResponse = await axios.post(
-        "http://localhost:5000/reservation/add",
-        {
-          userID,
-          eventID,
-        },
-        { headers }
-      );
-      console.log("Event reservation successful");
-      setUserReservations([...userReservations, reservationResponse.data.data]);
-    } catch (error) {
-      console.log("Event reservation error", error);
-      setError(error);
-    }
+
   };
 
   return (
@@ -83,9 +37,7 @@ function Home() {
       <button onClick={handleLogout} className="submit-button">
         Logout
       </button>
-      {events.length === 0 ? (
-        <p>No events available</p>
-      ) : (
+      {
         events.map((event) => (
           <div key={event.ID} className="card">
             <h3>{event.title}</h3>
@@ -94,13 +46,12 @@ function Home() {
             <button
               className="button button-primary"
               onClick={() => handleReserve(event.ID)}
-              disabled={hasReserved(event.ID)}
             >
-              {hasReserved(event.ID) ? "Reserved" : "Reserve"}
+              Reserve
             </button>
           </div>
         ))
-      )}
+      }
     </div>
   );
 }

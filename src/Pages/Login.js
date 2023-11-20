@@ -17,12 +17,7 @@ function Login() {
     return true;
   };
 
-  useEffect(() => {
-    const authToken = sessionStorage.getItem("authToken");
-    if (authToken) {
-      navigate("/");
-    }
-  }, [navigate]);
+
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,7 +29,6 @@ function Login() {
         password,
       });
       console.log(response.data);
-      sessionStorage.setItem("authToken", response.data.data.token);
       navigate("/");
     } catch (error) {
       setError(error.response.data.message);

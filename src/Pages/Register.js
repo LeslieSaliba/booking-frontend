@@ -30,12 +30,6 @@ function Register() {
     return true;
   };
 
-  useEffect(() => {
-    const authToken = sessionStorage.getItem("authToken");
-    if (authToken) {
-      navigate("/");
-    }
-  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +46,6 @@ function Register() {
         user
       );
       console.log(response.data);
-      sessionStorage.setItem("authToken", response.data.token);
       navigate("/");
     } catch (error) {
       setError(error.response.data.error);
