@@ -9,6 +9,7 @@ function Home() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [userID, setUserID] = useState(null);
+  const [userReservations, setUserReservations] = useState([]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -22,7 +23,21 @@ function Home() {
     };
 
     fetchEvents();
-  }, []);
+    setUserID(getUserID());
+
+    const fetchUserReservations = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5100/reservation/getByUserID/${userID}`
+        );
+        setUserReservations(response.data.data);
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchUserReservations();
+  }, [userID]);
 
   const handleLogout = () => {
     sessionStorage.removeItem("authToken");
@@ -40,9 +55,18 @@ function Home() {
         { headers }
       );
       console.log("reservation added successfully");
+      setUserReservations([...userReservations, response.data.data]);
     } catch (error) {
       setError(error);
     }
+  };
+
+  const isUserReserved = (eventID) => {
+    // return true if eventID exists in userReservations array
+    // else return false
+    return userReservations.some(
+      (reservation) => reservation.eventID === eventID
+    );
   };
 
   return (
@@ -63,8 +87,9 @@ function Home() {
             <button
               className="button button-primary"
               onClick={() => handleReserve(event.ID)}
+              disabled={isUserReserved(event.ID)}
             >
-              Reserve
+              {isUserReserved(event.ID) ? "Reserved" : "Reserve This Event"}
             </button>
           </div>
         ))

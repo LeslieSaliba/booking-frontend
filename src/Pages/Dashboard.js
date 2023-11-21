@@ -1,5 +1,5 @@
 import UserTable from "../Components/UserTable";
-// import EventTable from "../Components/EventTable";
+import EventTable from "../Components/EventTable";
 import VenueTable from "../Components/VenueTable";
 import ReservationTable from "../Components/ReservationTable";
 
@@ -8,7 +8,7 @@ const Dashboard = () => {
     <>
       <UserTable />
       <VenueTable />
-      {/* <EventTable />*/}
+      <EventTable />
       <ReservationTable />
     </>
   );

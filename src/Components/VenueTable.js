@@ -103,12 +103,29 @@ const VenueTable = () => {
       );
 
       fetchVenues();
-      setError('')
+      setError("");
       setShowUpdateModal(false);
     } catch (error) {
       setError(error);
     }
   };
+
+  const [sortOrder, setSortOrder] = useState(true); // true for ascending order , false for descending
+  const toggleSort = (field) => {
+    const newSortedVenues = [...venues].sort((a, b) => {
+      // if(a[field]< b[field]) return -1 aw 1 if i want sortOrder true aw false
+      
+      if (a[field] < b[field]) return sortOrder ? -1 : 1;
+
+      if (a[field] > b[field]) return sortOrder ? 1 : -1;
+
+      return 0;
+    });
+
+    setVenues(newSortedVenues);
+    setSortOrder(!sortOrder);
+  };
+
   return (
     <div className="card-main">
       <h1> Venue Table </h1>
@@ -126,12 +143,12 @@ const VenueTable = () => {
       <table className="table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Capacity</th>
+            <th onClick={() => toggleSort("ID")}>ID</th>
+            <th onClick={() => toggleSort("name")}>Name</th>
+            <th onClick={() => toggleSort("description")}>Description</th>
+            <th onClick={() => toggleSort("capacity")}>Capacity</th>
             <th>Image</th>
-            <th>Address</th>
+            <th onClick={() => toggleSort("address")}>Address</th>
             <th>Actions</th>
           </tr>
         </thead>

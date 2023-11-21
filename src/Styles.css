@@ -162,8 +162,10 @@ h2 {
 }
 
 .table th {
+  cursor: pointer;
   background-color: #f2f2f2;
   color: black;
+  user-select: none; 
 }
 
 .table tr:nth-child(even) {
