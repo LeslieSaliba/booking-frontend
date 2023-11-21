@@ -30,6 +30,11 @@ function Register() {
     return true;
   };
 
+  useEffect(() => {
+    if (sessionStorage.getItem("authToken")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,10 +47,12 @@ function Register() {
     console.log(user);
     try {
       const response = await axios.post(
-        "http://localhost:5000/user/register",
+        "http://localhost:5100/user/register",
         user
       );
       console.log(response.data);
+      sessionStorage.setItem("authToken", response.data.data.token);
+
       navigate("/");
     } catch (error) {
       setError(error.response.data.error);

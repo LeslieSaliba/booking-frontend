@@ -1,7 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../Styles.css";
+import axios from "axios";
 
 const ReservationTable = () => {
+  const [reservations, setReservations] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  const fetchReservations = () => {
+    axios
+      .get("http://localhost:5100/reservation/getAll")
+      .then((response) => {
+        console.log(response);
+        setReservations(response.data.data);
+      })
+      .catch((error) => {
+        setError(error);
+      });
+  };
+
+  const handelDeleteReservations = async (reservationID) => {
+    const token = sessionStorage.getItem("authToken");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    try {
+      await axios.delete(
+        `http://localhost:5100/reservation/delete/${reservationID}`,
+        { headers }
+      );
+      fetchReservations();
+    } catch (error) {}
+  };
   return (
     <div className="card-main">
       <h1> Reservation Table </h1>
@@ -32,7 +64,12 @@ const ReservationTable = () => {
               <td>{reservation.date}</td>
               <td>{reservation.name}</td>
               <td>
-                <button className="button button-secondary">
+                <button
+                  className="button button-secondary"
+                  onClick={() => {
+                    handelDeleteReservations(reservation.reservationID);
+                  }}
+                >
                   Cancel Reservation
                 </button>
               </td>

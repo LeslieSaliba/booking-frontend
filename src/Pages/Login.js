@@ -17,18 +17,23 @@ function Login() {
     return true;
   };
 
+  useEffect(() => {
+    if (sessionStorage.getItem("authToken")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInput()) return;
 
     try {
-      const response = await axios.post("http://localhost:5000/user/login", {
+      const response = await axios.post("http://localhost:5100/user/login", {
         email,
         password,
       });
       console.log(response.data);
+      sessionStorage.setItem("authToken", response.data.data.token);
       navigate("/");
     } catch (error) {
       setError(error.response.data.message);
