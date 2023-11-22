@@ -21,7 +21,7 @@ const EventTable = () => {
 
   const validateInput = () => {
     if (!ticketPrice || !title || !description || !venueID) {
-      setError("all fields are required >:( ");
+      setError("all fields are required");
       return false;
     }
 
@@ -30,7 +30,7 @@ const EventTable = () => {
 
   const fetchEvents = async () => {
     axios
-      .get("http://localhost:5100/event/getAll")
+      .get(`${process.env.REACT_APP_API_URL}/events/getAllEvents`)
       .then((response) => {
         console.log(response);
         setEvents(response.data.data);
@@ -42,7 +42,7 @@ const EventTable = () => {
 
   const fetchVenues = async () => {
     axios
-      .get("http://localhost:5100/venue/getAll")
+      .get(`${process.env.REACT_APP_API_URL}/venues/getAllVenues`)
       .then((response) => {
         console.log(response);
         setVenues(response.data.data);
@@ -60,7 +60,7 @@ const EventTable = () => {
 
     try {
       await axios.post(
-        "http://localhost:5100/event/add",
+        `${process.env.REACT_APP_API_URL}/events/addEvent`,
         { title, description, ticketPrice, venueID },
         { headers }
       );
@@ -88,7 +88,7 @@ const EventTable = () => {
 
     try {
       await axios.put(
-        `http://localhost:5100/event/update/${selectedEvent.ID}`,
+        `${process.env.REACT_APP_API_URL}/events/updateEvent/${selectedEvent.ID}`,
         { title, description, ticketPrice, venueID },
         { headers }
       );
@@ -104,7 +104,7 @@ const EventTable = () => {
     const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      await axios.delete(`http://localhost:5100/event/delete/${eventID}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/events/deleteEvent/${eventID}`, {
         headers,
       });
 

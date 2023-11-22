@@ -19,7 +19,7 @@ const VenueTable = () => {
 
   const fetchVenues = () => {
     axios
-      .get("http://localhost:5100/venue/getAll")
+      .get(`${process.env.REACT_APP_API_URL}/venues/getAllVenues`)
       .then((response) => {
         console.log(response);
         setVenues(response.data.data);
@@ -38,7 +38,7 @@ const VenueTable = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.delete(
-        `http://localhost:5100/venue/delete/${venueID}`,
+        `${process.env.REACT_APP_API_URL}/venues/deleteVenue/${venueID}`,
         {
           headers,
         }
@@ -62,7 +62,7 @@ const VenueTable = () => {
     formData.append("address", address);
 
     try {
-      await axios.post("http://localhost:5100/venue/add", formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/venues/addVenue`, formData, {
         headers,
       });
 
@@ -95,7 +95,7 @@ const VenueTable = () => {
 
     try {
       await axios.put(
-        `http://localhost:5100/venue/update/${selectedVenue.ID}`,
+        `${process.env.REACT_APP_API_URL}/venues/updateVenue/${selectedVenue.ID}`,
         formData,
         {
           headers,

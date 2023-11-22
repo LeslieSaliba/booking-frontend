@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://localhost:5100/event/getAll");
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/events/getAllEvents`);
         setEvents(response.data.data);
       } catch (error) {
         console.log("error fetching events", error);
@@ -28,7 +28,7 @@ function Home() {
     const fetchUserReservations = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5100/reservation/getByUserID/${userID}`
+          `${process.env.REACT_APP_API_URL}/reservation/getReservationsByUser/${userID}`
         );
         setUserReservations(response.data.data);
       } catch (error) {
@@ -50,7 +50,7 @@ function Home() {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       const response = await axios.post(
-        "http://localhost:5100/reservation/add",
+        `${process.env.REACT_APP_API_URL}/reservation/addReservation`,
         { userID, eventID },
         { headers }
       );

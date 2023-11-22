@@ -12,7 +12,7 @@ const ReservationTable = () => {
 
   const fetchReservations = () => {
     axios
-      .get("http://localhost:5100/reservation/getAll")
+      .get(`${process.env.REACT_APP_API_URL}/reservation/getAllReservations`)
       .then((response) => {
         console.log(response);
         setReservations(response.data.data);
@@ -28,7 +28,7 @@ const ReservationTable = () => {
 
     try {
       await axios.delete(
-        `http://localhost:5100/reservation/delete/${reservationID}`,
+        `${process.env.REACT_APP_API_URL}/reservation/deleteReservation/${reservationID}`,
         { headers }
       );
       fetchReservations();

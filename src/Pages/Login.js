@@ -28,7 +28,7 @@ function Login() {
     if (!validateInput()) return;
 
     try {
-      const response = await axios.post("http://localhost:5100/user/login", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, {
         email,
         password,
       });

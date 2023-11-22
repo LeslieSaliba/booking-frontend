@@ -47,7 +47,7 @@ function Register() {
     console.log(user);
     try {
       const response = await axios.post(
-        "http://localhost:5100/user/register",
+        `${process.env.REACT_APP_API_URL}/users/register`,
         user
       );
       console.log(response.data);

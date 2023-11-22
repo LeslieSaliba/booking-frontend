@@ -16,7 +16,7 @@ const UserTable = () => {
 
   const fetchUsers = () => {
     axios
-      .get("http://localhost:5100/user/getAll")
+      .get(`${process.env.REACT_APP_API_URL}/users/getAll`)
       .then((response) => {
         console.log(response);
         setUsers(response.data.data);
@@ -38,7 +38,7 @@ const UserTable = () => {
     const headers = { Authorization: `Bearer ${token}` };
     try {
       await axios.put(
-        `http://localhost:5100/user/update/${selectedUser.ID}`,
+        `${process.env.REACT_APP_API_URL}/users/update/${selectedUser.ID}`,
         { fullName, email },
         {
           headers,
@@ -58,7 +58,7 @@ const UserTable = () => {
 
     try {
       await axios.put(
-        `http://localhost:5100/user/switchToAdmin/${userID}`,
+        `${process.env.REACT_APP_API_URL}/users/switchtoadmin/${userID}`,
         {},
         {
           headers,
@@ -75,7 +75,7 @@ const UserTable = () => {
     const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      await axios.delete(`http://localhost:5100/user/delete/${userID}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/users/delete/${userID}`, {
         headers,
       });
       fetchUsers();
